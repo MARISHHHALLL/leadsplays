@@ -8,6 +8,8 @@ import { PERK_CATEGORIES_QUERY, PERKS_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { PerkCategory, PerkListItem } from "@/sanity/lib/types";
 
+export const revalidate = 0;
+
 const Featured = async () => {
   // Fetch data from Sanity
   const [categories, perks] = await Promise.all([
@@ -37,8 +39,7 @@ const Featured = async () => {
           <div className="flex flex-row justify-between">
             <h1 className="text-2xl font-semibold tracking-[-0.8px] leading-[32px]">
               {perk.title}
-            </h1>
-            <Image
+            </h1>            <Image
               src={urlFor(perk.logo).width(40).height(40).url()}
               alt={`${perk.title} icon`}
               width={40}
