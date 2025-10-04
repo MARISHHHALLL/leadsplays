@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -29,6 +29,17 @@ const joinFormSchema = z.discriminatedUnion("option", [
 type JoinFormData = z.infer<typeof joinFormSchema>;
 
 const JoinPage = () => {
+  return (
+    <Suspense fallback={null}>
+      <JoinForm />
+    </Suspense>
+  )
+}
+
+export default JoinPage;
+
+
+const JoinForm = () => {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState<"deals" | "work" | null>(
     null
@@ -245,5 +256,3 @@ const JoinPage = () => {
     </div>
   );
 };
-
-export default JoinPage;
