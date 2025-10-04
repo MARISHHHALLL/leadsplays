@@ -50,3 +50,11 @@ export const ALL_PERKS_QUERY =
   _id, title, slug, shortDescription, logo, dealValue, claimUrl, featured, publishedAt,
   category->{_id, name, slug}
 } | order(publishedAt desc)`);
+
+export const RANDOM_PERKS_QUERY =
+  defineQuery(`*[_type == "perk" && defined(slug.current)] | order(publishedAt desc)[0...30]{
+  _id, title, slug, shortDescription, logo, dealValue, claimUrl, featured, publishedAt,
+  category->{_id, name, slug}
+}`);
+
+

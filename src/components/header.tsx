@@ -29,8 +29,9 @@ const DATA = [
 
 export const Header = () => {
   return (
-    <div className="w-full h-[132px] bg-black flex flex-row items-center justify-center gap-[150px]">
-      <LogoIcon />
+    <div className="fixed top-0 left-0 w-full h-[132px] bg-black flex flex-row items-center justify-center gap-[150px] z-[999]">
+      <Link href='/'>
+        <LogoIcon /></Link>
       <ul className="flex flex-row items-center gap-[30px]">
         {DATA.map((item) => {
           return (
@@ -42,15 +43,16 @@ export const Header = () => {
           );
         })}
       </ul>
-      <Squircle
-        cornerRadius={12}
-        cornerSmoothing={1}
-        className="bg-[#D9E1D5]/15 h-[50px]"
-      >
-        <Button className=" bg-transparent h-full w-full px-[30px]  py-[10px] text-[20px] font-semibold">
-          Join
-        </Button>
-      </Squircle>
+      <Link href='/join'>
+        <Squircle
+          cornerRadius={12}
+          cornerSmoothing={1}
+          className="bg-[#D9E1D5]/15 h-[50px]"
+        >
+          <Button className=" bg-transparent h-full w-full px-[30px]  py-[10px] text-[20px] font-semibold">
+            Join
+          </Button>
+        </Squircle></Link>
     </div>
   );
 };

@@ -4,6 +4,64 @@ import { Squircle } from "@squircle-js/react";
 import { Button } from "@/components/ui/button";
 import { BodyIcons } from "@/icons";
 import Image from "next/image";
+
+const FEEDBACK_DATA = [
+  {
+    id: 1,
+    name: "James W.",
+    title: "Founder of HorizonTech",
+    rating: 5,
+    quote:
+      "Payroll across three countries used to be a nightmare for us. With the strategies and tools recommended here, everything runs smoothly. We’ve saved weeks of admin time each month.",
+    avatar: "/images/feedback/feedback-avatar2.png",
+  },
+  {
+    id: 2,
+    name: "Sofia M.",
+    title: "HR Manager at GlobalLink",
+    rating: 5,
+    quote: "I was overwhelmed with compliance rules for international contractors. The guidance I received made the entire process simple and stress-free. Highly recommend!",
+    avatar: "/images/feedback/feedback-avatar3.png",
+  },
+  {
+    id: 3,
+    name: "Daniel R.",
+    title: "COO of BrightWorks",
+    rating: 5,
+    quote:
+      "Scaling a remote team felt impossible until I learned how to structure our operations properly. Our team is now twice the size, and quality hasn’t dropped at all.",
+    avatar: "/images/feedback/feedback-avatar4.png",
+  },
+  {
+    id: 4,
+    name: "Camelia K.",
+    title: "CEO of NovaStart",
+    rating: 5,
+    quote:
+      "I didn’t even know the risks of misclassifying employees until I came across this site. Fixing that early probably saved us thousands in fines.",
+    avatar: "/images/feedback/feedback-avatar5.png",
+  },
+  {
+    id: 5,
+    name: "Michael L.",
+    title: "OM at CloudWave",
+    rating: 5,
+    quote:
+      "The consultation gave us clarity we didn’t have before. Our payroll is now automated, and we’re confident we’re meeting every compliance standard.",
+    avatar: "/images/feedback/feedback-avatar6.png",
+  },
+  {
+    id: 6,
+    name: "Priya S.",
+    title: "Co-Founder of RemBridge",
+    rating: 5,
+    quote:
+      "Managing a team spread across five countries was overwhelming. With the right systems in place, we finally feel in control of our operations.",
+    avatar: "/images/feedback/feedback-avatar.png",
+  },
+]
+
+
 export const FeedBack = () => {
   return (
     <div className="w-full py-[100px] bg-[url('/images/feedback-background.png')] bg-cover bg-center">
@@ -13,62 +71,7 @@ export const FeedBack = () => {
             Don't just take our words
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            {[
-              {
-                id: 1,
-                name: "Mark Zellers",
-                title: "CEO, Co-Founder",
-                rating: 5,
-                quote:
-                  "We're looking for people who share our vision! most of our time used to be taken up by most of alternate administrative work whereas now we can focus on building out to help our employees.",
-                avatar: "/images/feedback-avatar.png",
-              },
-              {
-                id: 2,
-                name: "Mark Zellers",
-                title: "CTO, Founder",
-                rating: 5,
-                quote:
-                  "This platform has revolutionized how we manage our team. The time savings are incredible and our productivity has increased significantly.",
-                avatar: "/images/feedback-avatar.png",
-              },
-              {
-                id: 3,
-                name: "Mark Zellers",
-                title: "VP of Operations",
-                rating: 5,
-                quote:
-                  "The administrative burden has been completely eliminated. We can now focus on what really matters - growing our business.",
-                avatar: "/images/feedback-avatar.png",
-              },
-              {
-                id: 4,
-                name: "Mark Zellers",
-                title: "Head of HR",
-                rating: 5,
-                quote:
-                  "Our team collaboration has improved dramatically. The streamlined processes have made everyone's job easier and more efficient.",
-                avatar: "/images/feedback-avatar.png",
-              },
-              {
-                id: 5,
-                name: "Mark Zellers",
-                title: "Founder & CEO",
-                rating: 5,
-                quote:
-                  "The ROI has been incredible. We've saved thousands of hours and our team is more motivated than ever before.",
-                avatar: "/images/feedback-avatar.png",
-              },
-              {
-                id: 6,
-                name: "Mark Zellers",
-                title: "COO, Co-Founder",
-                rating: 5,
-                quote:
-                  "This solution has transformed our workflow. We're able to scale faster and more efficiently than we ever thought possible.",
-                avatar: "/images/feedback-avatar.png",
-              },
-            ].map((testimonial) => (
+            {FEEDBACK_DATA.map((testimonial) => (
               <Squircle
                 cornerRadius={22}
                 cornerSmoothing={1}

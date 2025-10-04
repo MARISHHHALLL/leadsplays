@@ -68,9 +68,8 @@ export const FAQ: React.FC = () => {
                     {item.question}
                   </span>
                   <ChevronDown
-                    className={`size-7 text-[#101013] transition-transform ${
-                      isOpen ? "rotate-180" : "rotate-0"
-                    }`}
+                    className={`size-7 text-[#101013] transition-transform ${isOpen ? "rotate-180" : "rotate-0"
+                      }`}
                   />
                 </button>
                 {isOpen && (

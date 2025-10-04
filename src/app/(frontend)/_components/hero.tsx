@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { BodyIcons } from "@/icons";
 import { Squircle } from "@squircle-js/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const images_reviews = [
@@ -32,15 +33,16 @@ export const HeroComponents = () => {
             <br />
             Not Anymore.
           </h1>
-          <Squircle
-            cornerRadius={12}
-            cornerSmoothing={1}
-            className="h-[85px] drop-shadow-[2px_2px_0px_#29BF12] bg-[#ABFF4F] hover:bg-[#ABFF4F]/80"
-          >
-            <Button className="px-[40px] h-full  py-[20px] bg-transparent text-[30px] text-black  hover:bg-[#ABFF4F]/80 font-bold ">
-              Claim Now
-            </Button>
-          </Squircle>
+          <Link href="/join?deal=work">
+            <Squircle
+              cornerRadius={12}
+              cornerSmoothing={1}
+              className="h-[85px] drop-shadow-[2px_2px_0px_#29BF12] bg-[#ABFF4F] hover:bg-[#ABFF4F]/80"
+            >
+              <Button className="px-[40px] h-full  py-[20px] bg-transparent text-[30px] text-black  hover:bg-[#ABFF4F]/80 font-bold ">
+                Claim Now
+              </Button>
+            </Squircle></Link>
         </div>
         <div className="flex flex-row items-center gap-[16px]">
           <div className="flex flex-row items-center -space-x-4">

@@ -1,76 +1,72 @@
-import React from "react";
+import { Fragment } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
-type Insight = {
-  id: number;
-  title: string;
-  subtitle?: string;
-  image: string;
+import { client } from "@/sanity/lib/client";
+import { POSTS_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
+import type { PostListItem } from "@/sanity/lib/types";
+
+const PostCard = ({ post }: { post: PostListItem }) => {
+  const imageUrl = post.mainImage
+    ? urlFor(post.mainImage).width(342).height(403).url()
+    : null;
+
+  return (
+    <Link
+      href={`/blog/${post.slug.current}`}
+      className="relative block overflow-hidden rounded-2xl border border-[#6DFF54]/40 bg-[#0F1010]"
+    >
+      {imageUrl ? (
+        <Fragment>
+          <Image
+            src={imageUrl}
+            alt={post.title}
+            width={342}
+            height={403}
+            className="h-[403px] w-full object-cover opacity-90 transition-opacity duration-300 hover:opacity-100"
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+            <h3 className="text-xl font-semibold leading-7 text-white">{post.title}</h3>
+            <p className="mt-2 text-sm text-white/70">Read more</p>
+          </div>
+        </Fragment>
+      ) : (
+        <div className="flex h-[403px] w-full flex-col justify-between bg-[#0F1010] p-6">
+          <h3 className="text-2xl font-semibold leading-7 text-white">{post.title}</h3>
+          <p className="text-sm text-white/70">Read more</p>
+        </div>
+      )}
+    </Link>
+  );
 };
 
-const insights: Insight[] = [
-  {
-    id: 1,
-    title: "Calvin ensures",
-    subtitle: "safe payments to contractors.",
-    image: "/images/grow/1.png",
-  },
-  {
-    id: 2,
-    title: "How to make",
-    subtitle: "secure payments to contractors?",
-    image: "/images/grow/4.png",
-  },
-  {
-    id: 3,
-    title: "Worried about",
-    subtitle: "issues with your contractors?",
-    image: "/images/grow/3.png",
-  },
-  {
-    id: 4,
-    title: "How to make",
-    subtitle: "secure payments to contractors?",
-    image: "/images/grow/5.png",
-  },
-  {
-    id: 5,
-    title: "Worried about",
-    subtitle: "issues with your contractors?",
-    image: "/images/grow/2.png",
-  },
-];
+export const Grow = async () => {
+  noStore();
 
-export const Grow: React.FC = () => {
+  const posts = await client.fetch<PostListItem[]>(POSTS_QUERY);
+  const featuredPosts = posts.slice(0, 5);
+
   return (
-    <section className="w-full py-[100px] ">
+    <section className="w-full py-[100px]">
       <div className="mx-auto max-w-[1008px] flex flex-col items-center gap-[60px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {insights.map((card) => (
-            <div
-              key={card.id}
-              className="relative overflow-hidden rounded-2xl border border-[#6DFF54]/40 bg-[#0F1010]"
+        {featuredPosts.length === 0 ? (
+          <p className="text-center text-lg text-white/70">New stories are coming soon.</p>
+        ) : (
+          <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredPosts.map((post) => (
+              <PostCard key={post._id} post={post} />
+            ))}
+            <Link
+              href="/blog"
+              className="flex h-[403px] items-center justify-center rounded-2xl bg-[#ABFF4F] p-5 text-black transition hover:brightness-110"
             >
-              <Image
-                src={card.image}
-                alt={card.title}
-                width={342}
-                height={220}
-                className="h-[403px] w-[322px] object-cover opacity-90"
-              />
-            </div>
-          ))}
-
-          <Link
-            href="#"
-            className="flex items-center justify-center rounded-2xl bg-[#ABFF4F] text-black p-5 h-[403px]"
-          >
-            <span className=" font-semibold leading-6 text-black text-2xl">
-              Explore all articles →
-            </span>
-          </Link>
-        </div>
+              <span className="text-2xl font-semibold leading-6">Explore all articles -&gt;</span>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

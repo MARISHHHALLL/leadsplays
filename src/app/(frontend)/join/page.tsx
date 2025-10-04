@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Squircle } from "@squircle-js/react";
 
@@ -33,7 +33,8 @@ const JoinPage = () => {
   const [selectedOption, setSelectedOption] = useState<"deals" | "work" | null>(
     null
   );
-
+  const searchParams = useSearchParams();
+  const dealParams = searchParams.get("deal")
   const {
     register,
     handleSubmit,
@@ -50,7 +51,11 @@ const JoinPage = () => {
       phone: "",
     },
   });
-
+  useEffect(() => {
+    if (dealParams) {
+      setValue("option", dealParams as "deals" | "work")
+    }
+  }, [])
   const watchedOption = watch("option");
 
   const onSubmit = (data: JoinFormData) => {
@@ -107,11 +112,10 @@ const JoinPage = () => {
                     className="sr-only"
                   />
                   <div
-                    className={`w-[194px] h-[121px] flex items-center justify-center  rounded-[17px] cursor-pointer transition-all bg-[#112200]/10  text-lg border-2 ${
-                      watchedOption === "deals"
-                        ? " font-semibold text-black border-black"
-                        : "font-normal text-black/50 border-transparent"
-                    }`}
+                    className={`w-[194px] h-[121px] flex items-center justify-center  rounded-[17px] cursor-pointer transition-all bg-[#112200]/10  text-lg border-2 ${watchedOption === "deals"
+                      ? " font-semibold text-black border-black"
+                      : "font-normal text-black/50 border-transparent"
+                      }`}
                   >
                     Get deals
                   </div>
@@ -125,11 +129,10 @@ const JoinPage = () => {
                     className="sr-only"
                   />
                   <div
-                    className={`w-[194px] h-[121px] flex items-center justify-center rounded-[17px] cursor-pointer transition-all   bg-[#112200]/10  text-lg border-2${
-                      watchedOption === "work"
-                        ? " font-semibold text-black border-black"
-                        : "font-normal text-black/50 border-transparent"
-                    }`}
+                    className={`w-[194px] h-[121px] flex items-center justify-center rounded-[17px] cursor-pointer transition-all   bg-[#112200]/10  text-lg border-2${watchedOption === "work"
+                      ? " font-semibold text-black border-black"
+                      : "font-normal text-black/50 border-transparent"
+                      }`}
                   >
                     Work with us
                   </div>
