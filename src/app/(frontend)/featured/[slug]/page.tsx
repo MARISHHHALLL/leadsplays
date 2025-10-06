@@ -41,7 +41,7 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
 
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <div className="rounded-2xl bg-white/90 p-6 shadow-sm sm:p-8">
+            <div className="rounded-2xl  p-6 sm:p-8">
               <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 {perk.title}
               </h1>
@@ -53,7 +53,7 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
             </div>
 
             {relatedPerks.length > 0 && (
-              <div className="rounded-2xl bg-white/90 p-6 shadow-sm sm:p-8">
+              <div className="rounded-2xl ">
                 <h2 className="text-2xl font-semibold text-gray-900">Other deals</h2>
                 <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {relatedPerks.map((relatedPerk) => (
