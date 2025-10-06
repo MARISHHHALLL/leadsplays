@@ -11,13 +11,11 @@ import { PerkCategory, PerkListItem } from "@/sanity/lib/types";
 export const revalidate = 0;
 
 const Featured = async () => {
-  // Fetch data from Sanity
   const [categories, perks] = await Promise.all([
     client.fetch<PerkCategory[]>(PERK_CATEGORIES_QUERY),
     client.fetch<PerkListItem[]>(PERKS_QUERY),
   ]);
 
-  // Group perks by category
   const perksByCategory = categories.reduce(
     (acc, category) => {
       acc[category._id] = perks.filter(
@@ -27,39 +25,36 @@ const Featured = async () => {
     },
     {} as Record<string, PerkListItem[]>
   );
-  // Helper component for perk cards
+
   const PerkCard = ({ perk }: { perk: PerkListItem }) => (
     <Link href={`/featured/${perk.slug.current}`}>
       <Squircle
-        cornerRadius={20}
+        cornerRadius={22}
         cornerSmoothing={1}
-        className="flex flex-col gap-[21px] justify-between bg-white p-6 w-[320px] h-[257px] hover:shadow-lg transition-shadow cursor-pointer"
+        className="flex h-full flex-col gap-6 rounded-[22px] border border-black/5 bg-white/95 p-6 transition hover:shadow-lg"
       >
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between">
-            <h1 className="text-2xl font-semibold tracking-[-0.8px] leading-[32px]">
-              {perk.title}
-            </h1>            <Image
-              src={urlFor(perk.logo).width(40).height(40).url()}
-              alt={`${perk.title} icon`}
-              width={40}
-              height={40}
-              className="object-cover pointer-events-none"
-            />
-          </div>
-          <p className="text-sm leading-6 font-normal text-[#212529]">
-            {perk.shortDescription}
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="text-xl font-semibold leading-snug text-[#101013]">
+            {perk.title}
+          </h3>
+          <Image
+            src={urlFor(perk.logo).width(40).height(40).url()}
+            alt={`${perk.title} icon`}
+            width={40}
+            height={40}
+            className="h-10 w-10 object-contain"
+          />
         </div>
-        <div className="flex flex-row items-end justify-between">
-          <p className="flex flex-row items-center gap-[4px]">
-            Claim Now <ArrowRight className="size-[16px]" />
-          </p>
-          <div className="flex flex-col items-end">
-            <p className="text-sm leading-[26px] text-[#008300]">Deal</p>
-            <h3 className="text-2xl leading-[26px] font-bold text-[#008300]">
-              {perk.dealValue}
-            </h3>
+        <p className="text-sm leading-6 text-[#212529]/80">
+          {perk.shortDescription}
+        </p>
+        <div className="mt-auto flex items-end justify-between text-sm">
+          <span className="flex items-center gap-2 font-semibold text-[#101013]">
+            Claim Now <ArrowRight className="size-4" />
+          </span>
+          <div className="text-right text-[#008300]">
+            <p className="text-xs uppercase tracking-[0.2em]">Deal</p>
+            <p className="text-lg font-bold">{perk.dealValue}</p>
           </div>
         </div>
       </Squircle>
@@ -67,33 +62,28 @@ const Featured = async () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#D9E1D5] py-[100px]">
-      <div className="max-w-[1008px] mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+    <section className="min-h-screen bg-[#D9E1D5] py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl">
             Access $1,000,000+ in founder perks & discounts.
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="mt-4 text-base text-gray-600 sm:text-lg">
             No credit card required & instant access
           </p>
         </div>
 
-        {/* Dynamic Categories and Perks */}
-        {categories.map((category, categoryIndex) => {
+        {categories.map((category) => {
           const categoryPerks = perksByCategory[category._id] || [];
 
           if (categoryPerks.length === 0) return null;
 
           return (
-            <div
-              key={category._id}
-              className={categoryIndex === categories.length - 1 ? "" : "mb-16"}
-            >
-              <h2 className="text-2xl font-bold text-gray-900 mb-8">
+            <div key={category._id} className="space-y-6">
+              <h2 className="text-2xl font-semibold text-gray-900 sm:text-3xl">
                 {category.name}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {categoryPerks.map((perk) => (
                   <PerkCard key={perk._id} perk={perk} />
                 ))}
@@ -102,7 +92,7 @@ const Featured = async () => {
           );
         })}
       </div>
-    </div>
+    </section>
   );
 };
 

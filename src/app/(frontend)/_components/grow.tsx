@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
@@ -11,31 +9,26 @@ import type { PostListItem } from "@/sanity/lib/types";
 
 const PostCard = ({ post }: { post: PostListItem }) => {
   const imageUrl = post.mainImage
-    ? urlFor(post.mainImage).width(342).height(403).url()
+    ? urlFor(post.mainImage).width(600).height(720).url()
     : null;
 
   return (
     <Link
       href={`/blog/${post.slug.current}`}
-      className="relative block overflow-hidden rounded-2xl border border-[#6DFF54]/40 bg-[#0F1010]"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#6DFF54]/40 bg-[#0F1010] text-white transition hover:shadow-lg"
     >
       {imageUrl ? (
-        <Fragment>
+        <div className="relative aspect-[4/5] w-full overflow-hidden">
           <Image
             src={imageUrl}
             alt={post.title}
-            width={342}
-            height={403}
-            className="h-[403px] w-full object-cover opacity-90 transition-opacity duration-300 hover:opacity-100"
+            fill
+            className="object-cover opacity-90 transition duration-300 group-hover:scale-105 group-hover:opacity-100"
           />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
-            <h3 className="text-xl font-semibold leading-7 text-white">{post.title}</h3>
-            <p className="mt-2 text-sm text-white/70">Read more</p>
-          </div>
-        </Fragment>
+        </div>
       ) : (
-        <div className="flex h-[403px] w-full flex-col justify-between bg-[#0F1010] p-6">
-          <h3 className="text-2xl font-semibold leading-7 text-white">{post.title}</h3>
+        <div className="flex flex-1 flex-col justify-between bg-[#0F1010] p-6">
+          <h3 className="text-xl font-semibold leading-7">{post.title}</h3>
           <p className="text-sm text-white/70">Read more</p>
         </div>
       )}
@@ -50,20 +43,24 @@ export const Grow = async () => {
   const featuredPosts = posts.slice(0, 5);
 
   return (
-    <section className="w-full py-[100px]">
-      <div className="mx-auto max-w-[1008px] flex flex-col items-center gap-[60px]">
+    <section className="w-full py-16 sm:py-20">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-4 sm:px-6 lg:px-8">
         {featuredPosts.length === 0 ? (
-          <p className="text-center text-lg text-white/70">New stories are coming soon.</p>
+          <p className="text-center text-lg text-white/70">
+            New stories are coming soon.
+          </p>
         ) : (
-          <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featuredPosts.map((post) => (
               <PostCard key={post._id} post={post} />
             ))}
             <Link
               href="/blog"
-              className="flex h-[403px] items-center justify-center rounded-2xl bg-[#ABFF4F] p-5 text-black transition hover:brightness-110"
+              className="flex min-h-[240px] flex-col items-center justify-center rounded-2xl bg-[#ABFF4F] p-6 text-center text-black transition hover:brightness-110"
             >
-              <span className="text-2xl font-semibold leading-6">Explore all articles -&gt;</span>
+              <span className="text-xl font-semibold leading-6">
+                Explore all articles &gt;
+              </span>
             </Link>
           </div>
         )}

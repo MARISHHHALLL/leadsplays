@@ -10,7 +10,7 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 0; // ISR: revalidate every minute
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const posts = await client.fetch<PostListItem[]>(POSTS_QUERY);
@@ -30,29 +30,28 @@ const Page = async ({ params }: PageProps) => {
   }
 
   return (
-    <div className="w-full py-[100px] bg-[#D9E1D5]">
-      <div className="max-w-[1008px] mx-auto">
+    <section className="min-h-screen bg-[#D9E1D5] py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
         <Post data={post} />
 
-        <div className="mt-10">
-          <h2 className="text-[22px] font-semibold mb-3">Other articles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold text-[#101013] sm:text-3xl">
+            Other articles
+          </h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {otherPosts.map((op) => {
               const href = `/blog/${op.slug.current}`;
               const imgUrl = op.mainImage
-                ? urlFor(op.mainImage as any)
-                    .width(600)
-                    .height(360)
-                    .url()
+                ? urlFor(op.mainImage as any).width(600).height(360).url()
                 : undefined;
               return (
                 <Link
                   key={op._id}
                   href={href}
-                  className="block rounded-[16px] overflow-hidden bg-[#0F1419] text-white"
+                  className="flex h-full flex-col overflow-hidden rounded-2xl bg-[#0F1419] text-white transition hover:shadow-lg"
                 >
                   {imgUrl && (
-                    <div className="relative w-full h-[160px]">
+                    <div className="relative aspect-[4/3] w-full">
                       <Image
                         src={imgUrl}
                         alt={op.title}
@@ -61,22 +60,19 @@ const Page = async ({ params }: PageProps) => {
                       />
                     </div>
                   )}
-                  <div className="p-4">
-                    <h3 className="font-semibold leading-6">{op.title}</h3>
-                  </div>
                 </Link>
               );
             })}
             <Link
               href="/blog"
-              className="flex items-center justify-center rounded-[16px] bg-[#B6E58B] text-black"
+              className="flex items-center justify-center rounded-2xl bg-[#B6E58B] px-6 py-8 text-center text-lg font-semibold text-black transition hover:brightness-110"
             >
-              <span className="font-semibold">Explore all articles →</span>
+              Explore all articles &gt;
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

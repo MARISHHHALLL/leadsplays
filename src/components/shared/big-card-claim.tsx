@@ -9,6 +9,7 @@ export const BigCardClaim = () => {
       cornerRadius={20}
       cornerSmoothing={1}
       height={400}
+      width={1008}
       className="flex flex-col gap-[21px] justify-between bg-white p-6 w-full h-[360px] relative"
     >
       <Image

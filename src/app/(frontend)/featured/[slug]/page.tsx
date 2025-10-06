@@ -29,39 +29,33 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
   });
 
   return (
-    <div className="min-h-screen bg-[#D9E1D5] py-[100px]">
-      <div className="max-w-[1008px] mx-auto">
-        {/* Back Button */}
+    <section className="min-h-screen bg-[#D9E1D5] py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
         <Link
           href="/featured"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 transition hover:text-gray-900"
         >
           <ArrowLeft className="size-4" />
           Back
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            <div className=" rounded-2xl p-8 mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-6">
+        <div className="grid gap-10 lg:grid-cols-3">
+          <div className="space-y-8 lg:col-span-2">
+            <div className="rounded-2xl bg-white/90 p-6 shadow-sm sm:p-8">
+              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 {perk.title}
               </h1>
-
               {perk.longDescription && (
-                <div className="prose prose-lg max-w-none">
+                <div className="prose prose-lg mt-6 max-w-none text-gray-700">
                   <PortableText value={perk.longDescription} />
                 </div>
               )}
             </div>
 
-            {/* Related Perks */}
             {relatedPerks.length > 0 && (
-              <div className="bg-white rounded-2xl p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Other deals
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="rounded-2xl bg-white/90 p-6 shadow-sm sm:p-8">
+                <h2 className="text-2xl font-semibold text-gray-900">Other deals</h2>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {relatedPerks.map((relatedPerk) => (
                     <Link
                       key={relatedPerk._id}
@@ -70,37 +64,30 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
                       <Squircle
                         cornerRadius={20}
                         cornerSmoothing={1}
-                        className="flex flex-col gap-4 justify-between bg-gray-50 p-4 h-[200px] hover:shadow-lg transition-shadow cursor-pointer"
+                        className="flex h-full flex-col gap-4 rounded-[20px] bg-gray-50 p-5 transition hover:shadow-md"
                       >
-                        <div className="flex flex-col gap-3">
-                          <div className="flex flex-row justify-between items-start">
-                            <h3 className="text-lg font-semibold leading-tight">
-                              {relatedPerk.title}
-                            </h3>
-                            <Image
-                              src={urlFor(relatedPerk.logo)
-                                .width(32)
-                                .height(32)
-                                .url()}
-                              alt={`${relatedPerk.title} icon`}
-                              width={32}
-                              height={32}
-                              className="object-cover pointer-events-none flex-shrink-0"
-                            />
-                          </div>
-                          <p className="text-sm leading-5 font-normal text-gray-700 line-clamp-3">
-                            {relatedPerk.shortDescription}
-                          </p>
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="text-lg font-semibold leading-snug text-gray-900">
+                            {relatedPerk.title}
+                          </h3>
+                          <Image
+                            src={urlFor(relatedPerk.logo).width(32).height(32).url()}
+                            alt={`${relatedPerk.title} icon`}
+                            width={32}
+                            height={32}
+                            className="h-8 w-8 object-contain"
+                          />
                         </div>
-                        <div className="flex flex-row items-end justify-between">
-                          <p className="flex flex-row items-center gap-1 text-sm">
+                        <p className="text-sm leading-6 text-gray-600 line-clamp-3">
+                          {relatedPerk.shortDescription}
+                        </p>
+                        <div className="mt-auto flex items-end justify-between text-sm text-gray-900">
+                          <span className="flex items-center gap-1">
                             Claim Now <ArrowRight className="size-3" />
-                          </p>
-                          <div className="flex flex-col items-end">
-                            <p className="text-xs text-[#008300]">Deal</p>
-                            <p className="text-lg font-bold text-[#008300]">
-                              {relatedPerk.dealValue}
-                            </p>
+                          </span>
+                          <div className="text-right text-[#008300]">
+                            <p className="text-xs uppercase tracking-[0.2em]">Deal</p>
+                            <p className="text-lg font-bold">{relatedPerk.dealValue}</p>
                           </div>
                         </div>
                       </Squircle>
@@ -111,37 +98,34 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
             )}
           </div>
 
-          {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-8">
+            <div className="lg:sticky lg:top-32">
               <Squircle
-                cornerRadius={20}
+                cornerRadius={22}
                 cornerSmoothing={1}
-                className="bg-white p-6 flex flex-col gap-6"
+                className="flex flex-col gap-6 rounded-[22px] bg-white p-6 shadow-xl sm:p-8"
               >
-                <div className="flex flex-row justify-between items-start">
-                  <h2 className="text-2xl font-semibold leading-tight">
+                <div className="flex items-start justify-between gap-4">
+                  <h2 className="text-2xl font-semibold leading-snug text-gray-900">
                     {perk.title}
                   </h2>
                   <Image
-                    src={urlFor(perk.logo).width(40).height(40).url()}
+                    src={urlFor(perk.logo).width(48).height(48).url()}
                     alt={`${perk.title} icon`}
-                    width={40}
-                    height={40}
-                    className="object-cover pointer-events-none"
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 object-contain"
                   />
                 </div>
 
-                <p className="text-sm leading-6 font-normal text-gray-700">
+                <p className="text-sm leading-6 text-gray-600">
                   {perk.shortDescription}
                 </p>
 
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-row justify-between items-center">
-                    <p className="text-sm text-[#008300]">Deal</p>
-                    <p className="text-3xl font-bold text-[#008300]">
-                      ${perk.dealValue}
-                    </p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-[#008300]">
+                    <p className="text-sm uppercase tracking-[0.2em]">Deal</p>
+                    <p className="text-3xl font-bold">{perk.dealValue}</p>
                   </div>
 
                   {perk.claimUrl ? (
@@ -149,12 +133,12 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
                       href={perk.claimUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-[#008300] text-white px-6 py-3 rounded-lg font-semibold text-center hover:bg-[#006600] transition-colors"
+                      className="block w-full rounded-xl bg-[#008300] px-6 py-3 text-center text-base font-semibold text-white transition hover:bg-[#006600]"
                     >
                       Get Now
                     </a>
                   ) : (
-                    <button className="w-full bg-[#008300] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#006600] transition-colors">
+                    <button className="w-full rounded-xl bg-[#008300] px-6 py-3 text-base font-semibold text-white transition hover:bg-[#006600]">
                       Get Now
                     </button>
                   )}
@@ -164,7 +148,7 @@ const PerkDetailPage = async ({ params }: PerkDetailPageProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

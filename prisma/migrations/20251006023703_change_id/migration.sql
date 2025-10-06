@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "USERS" ADD CONSTRAINT "USERS_pkey" PRIMARY KEY ("id");

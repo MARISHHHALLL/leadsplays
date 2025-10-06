@@ -1,14 +1,14 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Squircle } from "@squircle-js/react";
+import toast from "react-hot-toast";
 
-// Zod schema for form validation
 const joinFormSchema = z.discriminatedUnion("option", [
   z.object({
     option: z.literal("deals"),
@@ -33,24 +33,22 @@ const JoinPage = () => {
     <Suspense fallback={null}>
       <JoinForm />
     </Suspense>
-  )
-}
+  );
+};
 
 export default JoinPage;
 
-
 const JoinForm = () => {
   const router = useRouter();
-  const [selectedOption, setSelectedOption] = useState<"deals" | "work" | null>(
-    null
-  );
   const searchParams = useSearchParams();
-  const dealParams = searchParams.get("deal")
+  const dealParam = searchParams.get("deal");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
     setValue,
   } = useForm<JoinFormData>({
     resolver: zodResolver(joinFormSchema),
@@ -62,122 +60,113 @@ const JoinForm = () => {
       phone: "",
     },
   });
-  useEffect(() => {
-    if (dealParams) {
-      setValue("option", dealParams as "deals" | "work")
-    }
-  }, [])
+
   const watchedOption = watch("option");
 
-  const onSubmit = (data: JoinFormData) => {
-    console.log("Form submitted with data:", data);
-    if (data.option === "deals") {
-      // Redirect to featured page
-      router.push("/featured");
-    } else {
-      // Handle work with us form submission
-      console.log("Work with us form submitted:", data);
-      // You can add your submission logic here
-      alert("Thank you for your interest! We'll get back to you soon.");
+  useEffect(() => {
+    if (dealParam === "deals" || dealParam === "work") {
+      setValue("option", dealParam);
     }
+  }, [dealParam, setValue]);
+
+  const onSubmit = async (data: JoinFormData) => {
+    if (data.option === "deals") {
+      router.push("/featured");
+      return;
+    } else {
+      const response = await fetch("/api/mutateUsers", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      const res = await response.json()
+      if (res.success) {
+        toast.success(`Demand created!`)
+        reset()
+      }
+    }
+
   };
 
   const handleOptionChange = (option: "deals" | "work") => {
-    setValue("option", option);
-    setSelectedOption(option);
+    setValue("option", option, { shouldValidate: true });
   };
 
   return (
-    <div className="flex justify-center items-center pt-[100px] pb-[200px] px-4 bg-[url('/images/blog-background.png')] bg-top bg-cover">
-      <div className="w-full max-w-[458px] ">
+    <section className="bg-[url('/images/blog-background.png')] bg-top bg-cover">
+      <div className="mx-auto w-full md:max-w-[458px] max-w-full px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <Squircle
-          cornerRadius={20}
+          cornerRadius={24}
           cornerSmoothing={1}
-          height={watchedOption === "deals" ? 470 : 900}
-          className="bg-white px-[30px] py-10 w-full flex flex-col gap-10"
+          className="flex flex-col md:w-[460px] w-full gap-8 bg-white p-6 shadow-xl sm:p-10"
         >
-          <div>
-            <h1 className="text-[32px] leading-[32px] font-bold mb-[10px] text-black">
-              {selectedOption === "work" ? "Work with us" : "Join Us"}
+          <div className="space-y-3 text-left">
+            <h1 className="text-3xl font-bold text-black sm:text-4xl">
+              {watchedOption === "work" ? "Work with us" : "Join Us"}
             </h1>
-            <p className="text-black/50 leading-6 text-sm">
-              Notify your team/members of the latest workplace with
-              <br />
-              instant Slack messages.
+            <p className="text-sm leading-6 text-black/60 sm:text-base">
+              Notify your team of the latest workplace updates with instant Slack messages.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-            {/* Radio Button Options */}
-            <div className="flex flex-col gap-[5px]">
-              <p className="text-xs font-semibold tracking-[-2%] text-black ml-5">
-                Select what you want?
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/70">
+                Select what you want
               </p>
-              <div className="flex gap-4">
-                <label className="flex-1">
-                  <input
-                    type="radio"
-                    value="deals"
-                    checked={watchedOption === "deals"}
-                    onChange={() => handleOptionChange("deals")}
-                    className="sr-only"
-                  />
-                  <div
-                    className={`w-[194px] h-[121px] flex items-center justify-center  rounded-[17px] cursor-pointer transition-all bg-[#112200]/10  text-lg border-2 ${watchedOption === "deals"
-                      ? " font-semibold text-black border-black"
-                      : "font-normal text-black/50 border-transparent"
-                      }`}
-                  >
-                    Get deals
-                  </div>
-                </label>
-                <label className="flex-1">
-                  <input
-                    type="radio"
-                    value="work"
-                    checked={watchedOption === "work"}
-                    onChange={() => handleOptionChange("work")}
-                    className="sr-only"
-                  />
-                  <div
-                    className={`w-[194px] h-[121px] flex items-center justify-center rounded-[17px] cursor-pointer transition-all   bg-[#112200]/10  text-lg border-2${watchedOption === "work"
-                      ? " font-semibold text-black border-black"
-                      : "font-normal text-black/50 border-transparent"
-                      }`}
-                  >
-                    Work with us
-                  </div>
-                </label>
+              <div className="grid gap-4 grid-cols-2 mt-5 md:mt-0">
+                {[
+                  { value: "deals", label: "Get deals" },
+                  { value: "work", label: "Work with us" },
+                ].map((option) => {
+                  const isActive = watchedOption === option.value;
+                  return (
+                    <label key={option.value} className="block">
+                      <input
+                        type="radio"
+                        name="option"
+                        value={option.value}
+                        checked={isActive}
+                        onChange={() => handleOptionChange(option.value as "deals" | "work")}
+                        className="sr-only"
+                      />
+                      <div
+                        className={`md:w-[194px] md:h-[121px] w-[140px] h-[90px] flex items-center justify-center rounded-[17px] cursor-pointer transition-all bg-[#112200]/10 text-sm md:text-lg border-2 ${isActive
+                          ? "font-semibold text-black border-black"
+                          : "font-normal text-black/50 border-transparent"
+                          }`}
+                      >
+                        {option.label}
+                      </div>
+                    </label>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Form Fields - Show only when Work with us is selected */}
             {watchedOption === "work" && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
                     What's your full name?
                   </label>
                   <input
                     {...register("fullName")}
                     type="text"
                     placeholder="Calvin Harris"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#008300] focus:border-transparent"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#008300]"
                   />
                   {errors.fullName && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.fullName.message}
-                    </p>
+                    <p className="text-sm text-red-500">{errors.fullName.message}</p>
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
                     Where are you located?
                   </label>
                   <select
                     {...register("location")}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#008300] focus:border-transparent"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#008300]"
                   >
                     <option value="">Select location</option>
                     <option value="United States">United States</option>
@@ -189,62 +178,55 @@ const JoinForm = () => {
                     <option value="Other">Other</option>
                   </select>
                   {errors.location && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.location.message}
-                    </p>
+                    <p className="text-sm text-red-500">{errors.location.message}</p>
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
                     What is your email address?
                   </label>
                   <input
                     {...register("email")}
                     type="email"
                     placeholder="example@company.com"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#008300] focus:border-transparent"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#008300]"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.email.message}
-                    </p>
+                    <p className="text-sm text-red-500">{errors.email.message}</p>
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
                     What is your phone number?
                   </label>
                   <input
                     {...register("phone")}
                     type="tel"
                     placeholder="3 XXX XXX XXXX"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#008300] focus:border-transparent"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#008300]"
                   />
                   {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.phone.message}
-                    </p>
+                    <p className="text-sm text-red-500">{errors.phone.message}</p>
                   )}
                 </div>
               </div>
             )}
 
-            {/* Submit Button */}
-            <div className="flex flex-col gap-[10px]">
+            <div className="space-y-3">
               <Button
                 type="submit"
-                className="flex-1 bg-[#008300] hover:bg-[#006600] text-white py-5  rounded-[15px] font-bold text-[20px] min-h-[70px]"
+                className="w-full rounded-[15px] bg-[#008300] md:py-4 md:h-[70px] py-3 h-[60px] text-base md:text-[20px] font-bold text-white hover:bg-[#006600] sm:py-4"
               >
-                {watchedOption === "deals" ? "Next" : "Claim Now"}
+                {watchedOption === "deals" ? "Next" : "Work with us"}
               </Button>
               {watchedOption === "work" && (
                 <Button
                   type="button"
-                  variant="default"
+                  variant="ghost"
                   onClick={() => handleOptionChange("deals")}
-                  className="flex-1 bg-[#ABFF4F]/30 hover:bg-[#ABFF4F] text-black py-5  rounded-[15px] font-bold text-[20px] min-h-[70px] "
+                  className="w-full rounded-[15px]  md:py-4 md:h-[70px] py-3 h-[60px] text-base md:text-[20px] font-bold border-[#ABFF4F]/60 bg-[#ABFF4F]/20   text-black hover:bg-[#ABFF4F]/40"
                 >
                   Back
                 </Button>
@@ -253,6 +235,8 @@ const JoinForm = () => {
           </form>
         </Squircle>
       </div>
-    </div>
+    </section>
   );
 };
+
+
