@@ -33,6 +33,7 @@ export const HeroComponents = () => {
             <br className="hidden sm:block" />
             Not Anymore.
           </h1>
+          <p className="text-2xl font-normal tracking-tight">Join hundreds of founders saving<br />big on the tools that power their startups.</p>
           <Link href="/join?deal=work">
             <Squircle
               cornerRadius={16}

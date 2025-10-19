@@ -12,27 +12,45 @@ type FaqItem = {
 const faqs: FaqItem[] = [
   {
     id: 1,
-    question: "What is the perfect idea to get deals ?",
+    question: "What exactly is LeadsPlays?",
     answer:
-      "We're looking for people who share our vision! most of our time used to be taken up by most of alternate administrative work whereas now we can focus on building out to help our employees.",
+      "LeadsPlays is a free platform that gives founders and startups instant access to $1M+ worth of exclusive deals, credits, and discounts from trusted SaaS and business service partners. No hidden fees or credit card required.",
   },
   {
     id: 2,
-    question: "What is the perfect idea to get deals ?",
+    question: "Who can join?",
     answer:
-      "We're looking for people who share our vision! most of our time used to be taken up by most of alternate administrative work whereas now we can focus on building out to help our employees.",
+      "Anyone building or running a startup, small business, or digital project can join. Whether you're pre-launch, scaling, or raising your next round, you’ll find perks tailored to your stage.",
   },
   {
     id: 3,
-    question: "What is the perfect idea to get deals ?",
+    question: "How do I claim a deal?",
     answer:
-      "We're looking for people who share our vision! most of our time used to be taken up by most of alternate administrative work whereas now we can focus on building out to help our employees.",
+      "Just click “Claim Now” on any offer, sign up (if needed), and you’ll get direct access to the discount or promo link instantly. No waiting or complicated verification steps.",
   },
   {
     id: 4,
-    question: "What is the perfect idea to get deals ?",
+    question: "Is it really free?",
     answer:
-      "We're looking for people who share our vision! most of our time used to be taken up by most of alternate administrative work whereas now we can focus on building out to help our employees.",
+      "Yes — 100% free. LeadsPlays earns partnerships with SaaS companies so you can save without paying us a cent. You’ll never be asked for a credit card to access deals.",
+  },
+  {
+    id: 5,
+    question: "What kind of deals can I expect?",
+    answer:
+      "You’ll find discounts, credits, and free trials from top tools like AWS, Slack, Brex, Mixpanel, Drift, and more — covering marketing, analytics, cloud hosting, HR, and productivity.",
+  },
+  {
+    id: 6,
+    question: "How do you choose your partners?",
+    answer:
+      "We carefully vet every partner for quality, reliability, and relevance to startups. Only verified and reputable SaaS tools make it to our platform.",
+  },
+  {
+    id: 7,
+    question: "Can I suggest a company or tool to be added?",
+    answer:
+      "Absolutely! We’re always expanding our partner list. Send us a message through the Contact page or email us your recommendation.",
   },
 ];
 
