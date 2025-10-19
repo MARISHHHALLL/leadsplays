@@ -68,6 +68,9 @@ export const FeedBack = () => {
           <h2 className="text-3xl font-semibold text-[#101013] sm:text-4xl">
             Don't just take our words
           </h2>
+          <p className="text-base font-normal text-[#101013]/80 sm:text-lg">
+            See how founders around the world use LeadsPlays to save thousands and scale faster.
+          </p>
         </div>
 
         <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
